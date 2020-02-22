@@ -18,7 +18,7 @@ class JenkinsApi:
                         self.j.create_job(job_name, self.java_config_file)
                     else:
                         self.j.create_job(job_name, self.dotNet_config_file)
-                    return json.dumps({"job_name": job_name,
+                    return json.dumps({"name": job_name,
                                        "project_type": project_type,
                                        "message": job_name + " Successfully created"})
                 else:
@@ -33,7 +33,7 @@ class JenkinsApi:
             for job in jenkins_jobs:
                 if job_name in job["name"]:
                     self.j.build_job(job_name)
-                    return {"job_name": job_name,
+                    return {"name": job_name,
                             "message": " successfully job built"}
         except BaseException as e:
             error = e

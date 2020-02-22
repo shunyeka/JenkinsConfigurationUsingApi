@@ -1,3 +1,8 @@
 flask
 flask_cors
 simplejson
+
+
+
+changes i have made in app.py and jenkins_job_configuration.py:
+  line No 21 and 36: renamed -> job_name to name

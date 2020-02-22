@@ -12,7 +12,7 @@ class JobManager {
     //Add new job
     $(document).on('click', '#create-new-job', function(e) {
       e.preventDefault();
-      self.createJob();
+      self.createJob(self);
     });
     //Build a job
     $(document).on('click', '.build', function(e) {
@@ -32,13 +32,13 @@ class JobManager {
       dataType: "json",
       contentType: 'application/json',
     }).done(function(jsonObj) {
-      console.log(jsonObj)
       self.addRows(jsonObj);
     }).fail(function(msg) {
       alert(JSON.stringify(msg));
     });
   }
-  createJob() {
+  createJob(self) {
+    let jsonObj = [];
     $('#new-job-modal').modal('show');
     $('#new-job-form').on('submit', function(e) {
       e.preventDefault();
@@ -55,7 +55,10 @@ class JobManager {
         dataType: 'json',
         contentType: 'application/json',
         data: JSON.stringify(create_data)
-      }).done(function(jsonObj) {
+      }).done(function(response) {
+        response = JSON.parse(response);
+        console.log(response);
+        jsonObj.push(response);
         self.addRows(jsonObj);
         $('#new-job-modal').modal('hide');
       }).fail(function(error) {
@@ -93,10 +96,11 @@ class JobManager {
       alert(JSON.stringify(error));
     });
   }
-  addRows(jsonObj) {
+  addRows(jsonObjs) {
     var markup = '';
-    $.each(jsonObj, function(i, obj) {
-      markup += "<tr>" + "<td class='job-name'>" + obj.name + "</td>" + "<td class='job-url'>" + obj.url + "</td>" + "<td><button class='build btn text-white' style='background-color:" + obj.color + ";'>Build</button></td>" + "<td><button class='delete btn text-white' style='background-color:" + obj.color + ";'>Delete</button></td>" + "</tr>";
+    $.each(jsonObjs, function(i, obj) {
+      console.log(obj);
+      markup += "<tr>" + "<td class='job-name'>" + obj.name + "</td>" + "<td class='job-url'>http://18.217.32.211:8080/job/" + obj.name + "/</td>" + "<td><button class='build btn text-white' style='background-color:" + obj.color + ";'>Build</button></td>" + "<td><button class='delete btn text-white' style='background-color:" + obj.color + ";'>Delete</button></td>" + "</tr>";
     });
     $('#user-table').append(markup);
   }
