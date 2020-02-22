@@ -67,12 +67,9 @@ class JenkinsApi:
         try:
             jenkins_jobs = self.get_all_jobs()
             for job in jenkins_jobs:
-                print(job)
                 if job_name in job["name"]:
                     self.j.delete_job(job_name)
                     return {"message": job_name + " successfully job deleted"}
-                else:
-                    return {"message": job_name + " is not exists"}
         except BaseException as e:
             error = e
             return {"message": error}
